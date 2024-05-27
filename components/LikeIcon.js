@@ -1,10 +1,10 @@
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-const LikeIcon = ({handlePress}) => {
+const LikeIcon = ({handlePress, icon}) => {
   return (
    <TouchableOpacity onPress={handlePress}>
-        <Ionicons name='star-outline' size={24} color='white' />
+        <Ionicons name={icon} size={24} color='white' />
    </TouchableOpacity>
   )
 }

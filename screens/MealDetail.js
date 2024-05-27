@@ -1,24 +1,35 @@
 import { Image, ScrollView, StyleSheet, Text, View, Button } from "react-native";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import LikeIcon from "../components/LikeIcon";
+import { FavoritesContext } from "../store/context/favorites-context";
 
 
 const MealDetail = ({ route, navigation }) => {
+
+  const favoriteMealsCtx = useContext(FavoritesContext);
+
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
+const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+
   const handlePress = () => {
-    console.log('Pressed');
+    if (mealIsFavorite) {
+      favoriteMealsCtx.removeFavorite(mealId);
+
+    } else {
+      favoriteMealsCtx.addFavorite(mealId);
+    }
   }
 
   useLayoutEffect(() => {navigation.setOptions({
     headerRight:  () => {
-      return <LikeIcon handlePress={handlePress}  />
+      return <LikeIcon icon={mealIsFavorite ? 'star': 'star-outline'} handlePress={handlePress}  />
     }
-  })}, [navigation])
+  })}, [navigation, handlePress])
 
   if (!selectedMeal) {
     return (
